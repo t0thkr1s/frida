@@ -20,9 +20,7 @@ pip3 install frida-tools
 
 ## Demo
 
-![Demo](https://i.imgur.com/3g2mdNl.gif)
-
-https://imgur.com/a/MnilWod
+<img src="https://i.imgur.com/3g2mdNl.gif" width="500">
 
 ### Disclaimer
 
