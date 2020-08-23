@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/pin_bypass"
+        android:icon="@drawable/ic_pin_bypass"
+        android:title="PIN Bypass" />
+
+    <item
+        android:id="@+id/root_bypass"
+        android:icon="@drawable/ic_root_bypass"
+        android:title="Root Bypass" />
+
+    <item
+        android:id="@+id/encryption_key"
+        android:icon="@drawable/ic_encryption_key"
+        android:title="Encryption Key" />
+
+    <item
+        android:id="@+id/certificate_pinning"
+        android:icon="@drawable/ic_ssl_pinning"
+        android:title="SSL Pinning" />
+
+</menu>
