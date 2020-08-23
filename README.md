@@ -8,7 +8,7 @@ This repository contains various Frida scripts and an intentionally vulnerable A
 
 ## Download
 
-Head over to the releases page, where you can download the debug apk and the Frida scripts.
+Head over to the [releases](https://github.com/t0thkr1s/frida/releases) page, where you can download the debug apk and the Frida scripts.
 
 ## Install
 
@@ -20,7 +20,9 @@ pip3 install frida-tools
 
 ## Demo
 
-<img src="https://i.imgur.com/3g2mdNl.gif" width="500">
+<p align="center">
+  <img src="https://i.imgur.com/3g2mdNl.gif" width="400">
+</p>
 
 ### Disclaimer
 
