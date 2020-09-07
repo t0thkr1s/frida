@@ -47,6 +47,12 @@ public class MainActivity extends AppCompatActivity {
                             .replace(R.id.frame, new CertificatePinning())
                             .commit();
                     return true;
+                case R.id.native_hook:
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.frame, new NativeHook())
+                            .commit();
+                    return true;
             }
             return false;
         });
