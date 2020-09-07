@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import infosecadventures.fridademo.fragments.NativeHook;
 import infosecadventures.fridademo.fragments.CertificatePinning;
 import infosecadventures.fridademo.fragments.EncryptionKey;
 import infosecadventures.fridademo.fragments.PinBypass;
