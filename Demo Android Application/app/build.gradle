@@ -19,13 +19,20 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    externalNativeBuild {
+        cmake {
+            path "src/main/cpp/CMakeLists.txt"
+            version "3.10.2"
+        }
+    }
+    ndkVersion '21.3.6528147'
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'com.google.android.material:material:1.2.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-rc1'
+    implementation 'com.google.android.material:material:1.2.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
     implementation 'androidx.vectordrawable:vectordrawable:1.1.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation("com.squareup.okhttp3:okhttp:3.14.9")
