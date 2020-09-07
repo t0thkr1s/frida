@@ -21,4 +21,9 @@
         android:icon="@drawable/ic_ssl_pinning"
         android:title="SSL Pinning" />
 
+    <item
+        android:id="@+id/native_hook"
+        android:icon="@drawable/ic_library_hook"
+        android:title="Native Hook" />
+
 </menu>
