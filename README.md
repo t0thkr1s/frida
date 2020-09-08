@@ -21,7 +21,7 @@ pip3 install frida-tools
 ## Tasks
 
 - [x] PIN Bypass
-- [x] PIN Bruteforce
+- [x] PIN Brute Force Attack
 - [x] Root Check Bypass
 - [x] AES Encryption Key Access
 - [x] Certificate Pinning Bypass
