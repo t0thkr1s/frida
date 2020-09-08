@@ -13,9 +13,6 @@ import androidx.fragment.app.Fragment;
 import infosecadventures.fridademo.R;
 import infosecadventures.fridademo.utils.EncryptionUtil;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class EncryptionKey extends Fragment {
 
 
@@ -33,7 +30,7 @@ public class EncryptionKey extends Fragment {
             cipher.setText("");
             String plain_text = plain.getText().toString();
             if (!plain_text.isEmpty()) {
-                cipher.setText(EncryptionUtil.encrypt("infosecadventure", plain_text));
+                cipher.setText(EncryptionUtil.encrypt("infosecadventures", plain_text));
             } else {
                 Toast.makeText(getContext(), getString(R.string.no_plaintext), Toast.LENGTH_SHORT).show();
             }
