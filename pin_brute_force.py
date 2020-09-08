@@ -1,4 +1,7 @@
+#!/usr/bin/env python3
+
 import frida
+import sys
 
 # For non-static classes
 script = """
