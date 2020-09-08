@@ -3,6 +3,7 @@
 # credits: Pichaya Morimoto (p.morimoto@sth.sh) && https://codeshare.frida.re/@dzonerzy/fridantiroot/
 
 import frida
+import sys
 
 script = """
 Java.perform(function() {
