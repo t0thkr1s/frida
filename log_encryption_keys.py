@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import frida
+import sys
 
 script = """
 Java.perform(function() {
