@@ -18,6 +18,16 @@ You must have Frida installed on your system. You can simply do this with:
 pip3 install frida-tools
 ```
 
+## Tasks
+
+- [x] PIN Bypass
+- [x] PIN Bruteforce
+- [x] Root Check Bypass
+- [x] AES Encryption Key Access
+- [x] Certificate Pinning Bypass
+- [x] SECURE_FLAG Bypass
+- [x] Native Library Hook
+
 ## Demo
 
 <p align="center">
