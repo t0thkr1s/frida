@@ -28,7 +28,7 @@ try:
     exploit.load()
     sys.stdin.read()
 except frida.ServerNotRunningError:
-    print("[ - ] Frida server is not running")
+    print("[ - ] Frida server is not running! Exiting...")
 except frida.NotSupportedError:
     print("[ - ] Unable to find application. Please, install it first!")
 except frida.ProcessNotFoundError:
