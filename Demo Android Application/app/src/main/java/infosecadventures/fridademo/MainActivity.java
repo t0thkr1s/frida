@@ -1,16 +1,15 @@
 package infosecadventures.fridademo;
 
 import android.os.Bundle;
-import android.view.MenuItem;
+import android.view.WindowManager;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import infosecadventures.fridademo.fragments.NativeHook;
 import infosecadventures.fridademo.fragments.CertificatePinning;
 import infosecadventures.fridademo.fragments.EncryptionKey;
+import infosecadventures.fridademo.fragments.NativeHook;
 import infosecadventures.fridademo.fragments.PinBypass;
 import infosecadventures.fridademo.fragments.RootBypass;
 
@@ -19,6 +18,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE);
+
         setContentView(R.layout.activity_main);
 
         BottomNavigationView navigation = findViewById(R.id.navigation);
