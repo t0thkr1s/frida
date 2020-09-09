@@ -3,7 +3,9 @@
 import frida
 import sys
 
-# For non-static classes
+package_name = "infosecadventures.fridademo"
+
+# for non-static classes
 script = """
 Java.perform(function() {
     console.log("[ * ] Starting PIN Brute-force, please wait...");
@@ -22,7 +24,7 @@ Java.perform(function() {
 
 """
 
-# For static classes
+# for static classes
 script = """
 Java.perform(function() {
     console.log("[ * ] Starting PIN Brute-force, please wait...")
@@ -36,8 +38,22 @@ Java.perform(function() {
 });
 """
 
-process = frida.get_usb_device().attach('infosecadventures.fridademo')
-exploit = process.create_script(script)
-print('[ * ] Running Frida Demo application')
-exploit.load()
-sys.stdin.read()
+try:
+    print("[ * ] Looking for app: " + package_name)
+    device = frida.get_usb_device()
+    print("[ * ] Launching app...")
+    pid = device.spawn([package_name])
+    device.resume(pid)
+    session = device.attach(pid)
+    exploit = session.create_script(script)
+    print("[ + ] App launched. Loading exploit...")
+    exploit.load()
+    sys.stdin.read()
+except frida.ServerNotRunningError:
+    print("[ - ] Frida server is not running! Exiting...")
+except frida.NotSupportedError:
+    print("[ - ] Unable to find application. Please, install it first!")
+except frida.ProcessNotFoundError:
+    print("[ - ] Unable to find process. Launch the app and try again!")
+except KeyboardInterrupt:
+    print("\n[ - ] Interrupted. Exiting...")
