@@ -5,6 +5,8 @@
 import frida
 import sys
 
+package_name = "infosecadventures.fridademo"
+
 script = """
 Java.perform(function() {
 
@@ -31,40 +33,29 @@ Java.perform(function() {
     for (var k in RootProperties) RootPropertiesKeys.push(k);
 
     var PackageManager = Java.use("android.app.ApplicationPackageManager");
-
     var Runtime = Java.use('java.lang.Runtime');
-
     var NativeFile = Java.use('java.io.File');
-
     var String = Java.use('java.lang.String');
-
     var SystemProperties = Java.use('android.os.SystemProperties');
-
     var BufferedReader = Java.use('java.io.BufferedReader');
-
     var ProcessBuilder = Java.use('java.lang.ProcessBuilder');
-
     var StringBuffer = Java.use('java.lang.StringBuffer');
-
     var loaded_classes = Java.enumerateLoadedClassesSync();
 
-    send("Loaded " + loaded_classes.length + " classes!");
+    console.log("[ * ] Loaded " + loaded_classes.length + " classes!");
 
     var useKeyInfo = false;
-
     var useProcessManager = false;
-
-    send("Loaded: " + loaded_classes.indexOf('java.lang.ProcessManager'));
 
     if (loaded_classes.indexOf('java.lang.ProcessManager') != -1) {
         try {
             //useProcessManager = true;
             //var ProcessManager = Java.use('java.lang.ProcessManager');
         } catch (err) {
-            send("ProcessManager hook failed: " + err);
+            console.log("ProcessManager hook failed: " + err);
         }
     } else {
-        send("ProcessManager hook not loaded.");
+        console.log("[ - ] ProcessManager hook not loaded.");
     }
 
     var KeyInfo = null;
@@ -74,16 +65,16 @@ Java.perform(function() {
             //useKeyInfo = true;
             //var KeyInfo = Java.use('android.security.keystore.KeyInfo');
         } catch (err) {
-            send("KeyInfo hook failed: " + err);
+            console.log("KeyInfo hook failed: " + err);
         }
     } else {
-        send("KeyInfo hook not loaded.");
+        console.log("[ - ] KeyInfo hook not loaded.");
     }
 
     PackageManager.getPackageInfo.overload('java.lang.String', 'int').implementation = function(pname, flags) {
         var shouldFakePackage = (RootPackages.indexOf(pname) > -1);
         if (shouldFakePackage) {
-            send("Bypass root check for package: " + pname);
+            console.log("[ + ] Bypass root check for package: " + pname);
             pname = "set.package.name.to.a.fake.one.so.we.can.bypass.it";
         }
         return this.getPackageInfo.call(this, pname, flags);
@@ -93,7 +84,7 @@ Java.perform(function() {
         var name = NativeFile.getName.call(this);
         var shouldFakeReturn = (RootBinaries.indexOf(name) > -1);
         if (shouldFakeReturn) {
-            send("Bypass return value for binary: " + name);
+            console.log("[ + ] Bypass return value for binary: " + name);
             return false;
         } else {
             return this.exists.call(this);
@@ -110,17 +101,17 @@ Java.perform(function() {
     exec5.implementation = function(cmd, env, dir) {
         if (cmd.indexOf("getprop") != -1 || cmd == "mount" || cmd.indexOf("build.prop") != -1 || cmd == "id" || cmd == "sh") {
             var fakeCmd = "grep";
-            send("Bypass " + cmd + " command");
+            console.log("[ + ] Bypass " + cmd + " command");
             return exec1.call(this, fakeCmd);
         }
         if (cmd == "su") {
             var fakeCmd = "justafakecommandthatcannotexistsusingthisshouldthowanexceptionwheneversuiscalled";
-            send("Bypass " + cmd + " command");
+            console.log("[ + ] Bypass " + cmd + " command");
             return exec1.call(this, fakeCmd);
         }
         if (cmd == "which") {
             var fakeCmd = "justafakecommandthatcannotexistsusingthisshouldthowanexceptionwheneversuiscalled";
-            send("Bypass " + cmd + " command");
+            console.log("[ + ] Bypass " + cmd + " command");
             return exec1.call(this, fakeCmd);
         }
         return exec5.call(this, cmd, env, dir);
@@ -131,13 +122,13 @@ Java.perform(function() {
             var tmp_cmd = cmdarr[i];
             if (tmp_cmd.indexOf("getprop") != -1 || tmp_cmd == "mount" || tmp_cmd.indexOf("build.prop") != -1 || tmp_cmd == "id" || tmp_cmd == "sh") {
                 var fakeCmd = "grep";
-                send("Bypass " + cmdarr + " command");
+                console.log("[ + ] Bypass " + cmdarr + " command");
                 return exec1.call(this, fakeCmd);
             }
 
             if (tmp_cmd == "su") {
                 var fakeCmd = "justafakecommandthatcannotexistsusingthisshouldthowanexceptionwheneversuiscalled";
-                send("Bypass " + cmdarr + " command");
+                console.log("[ + ] Bypass " + cmdarr + " command");
                 return exec1.call(this, fakeCmd);
             }
         }
@@ -149,13 +140,13 @@ Java.perform(function() {
             var tmp_cmd = cmdarr[i];
             if (tmp_cmd.indexOf("getprop") != -1 || tmp_cmd == "mount" || tmp_cmd.indexOf("build.prop") != -1 || tmp_cmd == "id" || tmp_cmd == "sh") {
                 var fakeCmd = "grep";
-                send("Bypass " + cmdarr + " command");
+                console.log("[ + ] Bypass " + cmdarr + " command");
                 return exec1.call(this, fakeCmd);
             }
 
             if (tmp_cmd == "su") {
                 var fakeCmd = "justafakecommandthatcannotexistsusingthisshouldthowanexceptionwheneversuiscalled";
-                send("Bypass " + cmdarr + " command");
+                console.log("[ + ] Bypass " + cmdarr + " command");
                 return exec1.call(this, fakeCmd);
             }
         }
@@ -165,12 +156,12 @@ Java.perform(function() {
     exec2.implementation = function(cmd, env) {
         if (cmd.indexOf("getprop") != -1 || cmd == "mount" || cmd.indexOf("build.prop") != -1 || cmd == "id" || cmd == "sh") {
             var fakeCmd = "grep";
-            send("Bypass " + cmd + " command");
+            console.log("[ + ] Bypass " + cmd + " command");
             return exec1.call(this, fakeCmd);
         }
         if (cmd == "su") {
             var fakeCmd = "justafakecommandthatcannotexistsusingthisshouldthowanexceptionwheneversuiscalled";
-            send("Bypass " + cmd + " command");
+            console.log("[ + ] Bypass " + cmd + " command");
             return exec1.call(this, fakeCmd);
         }
         return exec2.call(this, cmd, env);
@@ -181,13 +172,13 @@ Java.perform(function() {
             var tmp_cmd = cmd[i];
             if (tmp_cmd.indexOf("getprop") != -1 || tmp_cmd == "mount" || tmp_cmd.indexOf("build.prop") != -1 || tmp_cmd == "id" || tmp_cmd == "sh") {
                 var fakeCmd = "grep";
-                send("Bypass " + cmd + " command");
+                console.log("[ + ] Bypass " + cmd + " command");
                 return exec1.call(this, fakeCmd);
             }
 
             if (tmp_cmd == "su") {
                 var fakeCmd = "justafakecommandthatcannotexistsusingthisshouldthowanexceptionwheneversuiscalled";
-                send("Bypass " + cmd + " command");
+                console.log("[ + ] Bypass " + cmd + " command");
                 return exec1.call(this, fakeCmd);
             }
         }
@@ -198,12 +189,12 @@ Java.perform(function() {
     exec1.implementation = function(cmd) {
         if (cmd.indexOf("getprop") != -1 || cmd == "mount" || cmd.indexOf("build.prop") != -1 || cmd == "id" || cmd == "sh") {
             var fakeCmd = "grep";
-            send("Bypass " + cmd + " command");
+            console.log("[ + ] Bypass " + cmd + " command");
             return exec1.call(this, fakeCmd);
         }
         if (cmd == "su") {
             var fakeCmd = "justafakecommandthatcannotexistsusingthisshouldthowanexceptionwheneversuiscalled";
-            send("Bypass " + cmd + " command");
+            console.log("[ + ] Bypass " + cmd + " command");
             return exec1.call(this, fakeCmd);
         }
         return exec1.call(this, cmd);
@@ -211,7 +202,7 @@ Java.perform(function() {
 
     String.contains.implementation = function(name) {
         if (name == "test-keys") {
-            send("Bypass test-keys check");
+            console.log("[ + ] Bypass test-keys check.");
             return false;
         }
         return this.contains.call(this, name);
@@ -221,7 +212,7 @@ Java.perform(function() {
 
     get.implementation = function(name) {
         if (RootPropertiesKeys.indexOf(name) != -1) {
-            send("Bypass " + name);
+            console.log("[ + ] Bypass " + name);
             return RootProperties[name];
         }
         return this.get.call(this, name);
@@ -235,7 +226,7 @@ Java.perform(function() {
             var shouldFakeReturn = (RootBinaries.indexOf(executable) > -1)
             if (shouldFakeReturn) {
                 Memory.writeUtf8String(args[0], "/nonexistent");
-                send("Bypass native fopen >> " + path1);
+                console.log("[ + ] Bypass native fopen >> " + path1);
             }
         },
         onLeave: function(retval) {
@@ -251,7 +242,7 @@ Java.perform(function() {
             var shouldFakeReturn = (RootBinaries.indexOf(executable) > -1)
             if (shouldFakeReturn) {
                 Memory.writeUtf8String(args[0], "/ggezxxx");
-                send("Bypass native fopen >> " + path1);
+                console.log("[ + ] Bypass native fopen >> " + path1);
             }
         },
         onLeave: function(retval) {
@@ -262,13 +253,13 @@ Java.perform(function() {
     Interceptor.attach(Module.findExportByName("libc.so", "system"), {
         onEnter: function(args) {
             var cmd = Memory.readCString(args[0]);
-            send("SYSTEM CMD: " + cmd);
+            console.log("SYSTEM CMD: " + cmd);
             if (cmd.indexOf("getprop") != -1 || cmd == "mount" || cmd.indexOf("build.prop") != -1 || cmd == "id") {
-                send("Bypass native system: " + cmd);
+                console.log("[ + ] Bypass native system: " + cmd);
                 Memory.writeUtf8String(args[0], "grep");
             }
             if (cmd == "su") {
-                send("Bypass native system: " + cmd);
+                console.log("[ + ] Bypass native system: " + cmd);
                 Memory.writeUtf8String(args[0], "justafakecommandthatcannotexistsusingthisshouldthowanexceptionwheneversuiscalled");
             }
         },
@@ -278,9 +269,7 @@ Java.perform(function() {
     });
 
     /*
-
     TO IMPLEMENT:
-
     Exec Family
 
     int execl(const char *path, const char *arg0, ..., const char *argn, (char *)0);
@@ -291,7 +280,6 @@ Java.perform(function() {
     int execve(const char *path, char *const argv[], char *const envp[]);
     int execvp(const char *file, char *const argv[]);
     int execvpe(const char *file, char *const argv[], char *const envp[]);
-
     */
 
 
@@ -302,7 +290,7 @@ Java.perform(function() {
         } else {
             var shouldFakeRead = (text.indexOf("ro.build.tags=test-keys") > -1);
             if (shouldFakeRead) {
-                send("Bypass build.prop file read");
+                console.log("[ + ] Bypass build.prop file read");
                 text = text.replace("ro.build.tags=test-keys", "ro.build.tags=release-keys");
             }
         }
@@ -321,12 +309,12 @@ Java.perform(function() {
             }
         }
         if (shouldModifyCommand) {
-            send("Bypass ProcessBuilder " + cmd);
+            console.log("[ + ] Bypass ProcessBuilder " + cmd);
             this.command.call(this, ["grep"]);
             return this.start.call(this);
         }
         if (cmd.indexOf("su") != -1) {
-            send("Bypass ProcessBuilder " + cmd);
+            console.log("[ + ] Bypass ProcessBuilder " + cmd);
             this.command.call(this, ["justafakecommandthatcannotexistsusingthisshouldthowanexceptionwheneversuiscalled"]);
             return this.start.call(this);
         }
@@ -344,12 +332,12 @@ Java.perform(function() {
                 var tmp_cmd = cmd[i];
                 if (tmp_cmd.indexOf("getprop") != -1 || tmp_cmd == "mount" || tmp_cmd.indexOf("build.prop") != -1 || tmp_cmd == "id") {
                     var fake_cmd = ["grep"];
-                    send("Bypass " + cmdarr + " command");
+                    console.log("[ + ] Bypass " + cmdarr + " command");
                 }
 
                 if (tmp_cmd == "su") {
                     var fake_cmd = ["justafakecommandthatcannotexistsusingthisshouldthowanexceptionwheneversuiscalled"];
-                    send("Bypass " + cmdarr + " command");
+                    console.log("[ + ] Bypass " + cmdarr + " command");
                 }
             }
             return ProcManExec.call(this, fake_cmd, env, workdir, redirectstderr);
@@ -361,12 +349,12 @@ Java.perform(function() {
                 var tmp_cmd = cmd[i];
                 if (tmp_cmd.indexOf("getprop") != -1 || tmp_cmd == "mount" || tmp_cmd.indexOf("build.prop") != -1 || tmp_cmd == "id") {
                     var fake_cmd = ["grep"];
-                    send("Bypass " + cmdarr + " command");
+                    console.log("[ + ] Bypass " + cmdarr + " command");
                 }
 
                 if (tmp_cmd == "su") {
                     var fake_cmd = ["justafakecommandthatcannotexistsusingthisshouldthowanexceptionwheneversuiscalled"];
-                    send("Bypass " + cmdarr + " command");
+                    console.log("[ + ] Bypass " + cmdarr + " command");
                 }
             }
             return ProcManExecVariant.call(this, fake_cmd, env, directory, stdin, stdout, stderr, redirect);
@@ -375,16 +363,29 @@ Java.perform(function() {
 
     if (useKeyInfo) {
         KeyInfo.isInsideSecureHardware.implementation = function() {
-            send("Bypass isInsideSecureHardware");
+            console.log("[ + ] Bypass isInsideSecureHardware");
             return true;
         }
     }
-
 });
 """
 
-process = frida.get_usb_device().attach('infosecadventures.fridademo')
-script = process.create_script(script)
-print('[ * ] Running Frida Demo application')
-script.load()
-sys.stdin.read()
+try:
+    print("[ * ] Looking for app: " + package_name)
+    device = frida.get_usb_device()
+    print("[ * ] Launching app...")
+    pid = device.spawn([package_name])
+    device.resume(pid)
+    session = device.attach(pid)
+    exploit = session.create_script(script)
+    print("[ + ] App launched. Loading exploit...")
+    exploit.load()
+    sys.stdin.read()
+except frida.ServerNotRunningError:
+    print("[ - ] Frida server is not running! Exiting...")
+except frida.NotSupportedError:
+    print("[ - ] Unable to find application. Please, install it first!")
+except frida.ProcessNotFoundError:
+    print("[ - ] Unable to find process. Launch the app and try again!")
+except KeyboardInterrupt:
+    print("\n[ - ] Interrupted. Exiting...")
