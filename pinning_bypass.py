@@ -3,6 +3,9 @@
 # credit: Maurizio Siddu
 
 import frida
+import sys
+
+package_name = "infosecadventures.fridademo"
 
 script = """
 setTimeout(function() {
@@ -275,7 +278,7 @@ setTimeout(function() {
         try {
             var AndroidWebViewClient_Activity = Java.use('android.webkit.WebViewClient');
             AndroidWebViewClient_Activity.onReceivedSslError.overload('android.webkit.WebView', 'android.webkit.SslErrorHandler', 'android.net.http.SslError').implementation = function(obj1, obj2, obj3) {
-                console.log('[+] Bypassing Android WebViewClient');
+                console.log('[ + ] Bypassing Android WebViewClient');
             };
 
         } catch (err) {
@@ -310,8 +313,22 @@ setTimeout(function() {
 }, 0);
 """
 
-process = frida.get_usb_device().attach('infosecadventures.fridademo')
-script = process.create_script(script)
-print('[ * ] Running Frida Demo application')
-script.load()
-sys.stdin.read()
+try:
+    print("[ * ] Looking for app: " + package_name)
+    device = frida.get_usb_device()
+    print("[ * ] Launching app...")
+    pid = device.spawn([package_name])
+    device.resume(pid)
+    session = device.attach(pid)
+    exploit = session.create_script(script)
+    print("[ + ] App launched. Loading exploit...")
+    exploit.load()
+    sys.stdin.read()
+except frida.ServerNotRunningError:
+    print("[ - ] Frida server is not running! Exiting...")
+except frida.NotSupportedError:
+    print("[ - ] Unable to find application. Please, install it first!")
+except frida.ProcessNotFoundError:
+    print("[ - ] Unable to find process. Launch the app and try again!")
+except KeyboardInterrupt:
+    print("\n[ - ] Interrupted. Exiting...")
