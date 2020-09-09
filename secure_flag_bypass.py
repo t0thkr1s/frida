@@ -3,6 +3,8 @@
 import frida
 import sys
 
+package_name = "infosecadventures.fridademo"
+
 script = """
  Java.perform(function() {
     var FLAG_SECURE = 0x2000;
@@ -26,7 +28,7 @@ script = """
              var flags = this.activity.value.getWindow().getAttributes().flags.value;
              flags &= ~FLAG_SECURE;
              this.activity.value.getWindow().setFlags(flags, FLAG_SECURE);
-             console.log("[ * ] SECURE flag is now disabled!");
+             console.log("[ + ] SECURE flag is now disabled!");
           }
        }
     });
@@ -41,8 +43,22 @@ script = """
 });
 """
 
-process = frida.get_usb_device().attach('infosecadventures.fridademo')
-exploit = process.create_script(script)
-print('[ * ] Running Frida Demo application')
-exploit.load()
-sys.stdin.read()
+try:
+    print("[ * ] Looking for app: " + package_name)
+    device = frida.get_usb_device()
+    print("[ * ] Launching app...")
+    pid = device.spawn([package_name])
+    device.resume(pid)
+    session = device.attach(pid)
+    exploit = session.create_script(script)
+    print("[ + ] App launched. Loading exploit...")
+    exploit.load()
+    sys.stdin.read()
+except frida.ServerNotRunningError:
+    print("[ - ] Frida server is not running! Exiting...")
+except frida.NotSupportedError:
+    print("[ - ] Unable to find application. Please, install it first!")
+except frida.ProcessNotFoundError:
+    print("[ - ] Unable to find process. Launch the app and try again!")
+except KeyboardInterrupt:
+    print("\n[ - ] Interrupted. Exiting...")
