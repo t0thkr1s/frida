@@ -31,7 +31,7 @@ pip3 install frida-tools
 ## Demo
 
 <p align="center">
-  <img src="https://i.imgur.com/3g2mdNl.gif" width="400">
+  <img src="https://i.imgur.com/AuH5FY0.gif" width="400">
 </p>
 
 ### Disclaimer
