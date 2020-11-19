@@ -4,11 +4,15 @@
 [![built-with-love](http://forthebadge.com/images/badges/built-with-love.svg)](https://gitHub.com/t0thkr1s/)
 
 
-This repository contains various Frida scripts and an intentionally vulnerable Android application. I created this project to demonstrate the capabilities of the Frida dynamic-analysis framework. You can read my ["Introduction to Frida"](https://medium.com/infosec-adventures/introduction-to-frida-5a3f51595ca1) blog post on Medium, where I'm explaining how to use Frida on the included demo application.
+This repository contains various Frida scripts for Android application penetration testing. I created this project to demonstrate the capabilities of the Frida dynamic-analysis framework. You can read my ["Introduction to Frida"](https://medium.com/infosec-adventures/introduction-to-frida-5a3f51595ca1) blog post on Medium, where I'm explaining how to use Frida with Android.
 
 ## Download
 
-Head over to the [releases](https://github.com/t0thkr1s/frida/releases) page, where you can download the debug apk and the Frida scripts.
+You can simply clone the repository or head over to the [releases](https://github.com/t0thkr1s/frida/releases) page to download the Frida scripts.
+
+```
+git clone https://github.com/t0thkr1s/frida
+```
 
 ## Install
 
@@ -17,22 +21,6 @@ You must have Frida installed on your system. You can simply do this with:
 ```
 pip3 install frida-tools
 ```
-
-## Tasks
-
-- [x] PIN Bypass
-- [x] PIN Brute Force Attack
-- [x] Root Check Bypass
-- [x] AES Encryption Key Access
-- [x] Certificate Pinning Bypass
-- [x] SECURE_FLAG Bypass
-- [x] Native Library Hook
-
-## Demo
-
-<p align="center">
-  <img src="https://i.imgur.com/AuH5FY0.gif" width="400">
-</p>
 
 ### Disclaimer
 
