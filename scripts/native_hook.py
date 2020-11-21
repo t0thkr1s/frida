@@ -3,28 +3,28 @@
 import frida
 import sys
 
-package_name = "infosecadventures.fridademo"
+package_name = "INSERT_PACKAGE_HERE"
 
 # version 1
 script = """
 Java.perform(function() {
     console.log("[ * ] Starting implementation override...")
-    var NativeHook = Java.use("infosecadventures.fridademo.fragments.NativeHook");
-    NativeHook.checkPassword.implementation = function (password) {
-        console.log("[ * ] The provided password is: " + password);
+    var NativeHook = Java.use("INSERT_CLASS_HERE");
+    NativeHook.INSERT_METHOD_HERE.implementation = function (INSERT_PARAMETER_HERE) {
+        console.log("[ * ] The provided parameter is: " + INSERT_PARAMETER_HERE);
         console.log("[ + ] Native method successfully bypassed!");
-        return true;
+        return INSERT_RETURN_VALUE_HERE;
   };
 });
 """
 
 # version 2
 script = """
-Interceptor.attach(Module.getExportByName('libnative_hook.so', 'Java_infosecadventures_fridademo_fragments_NativeHook_checkPassword'), {
+Interceptor.attach(Module.getExportByName('INSERT_LIBRARY_HERE', 'INSERT_METHOD_HERE'), {
     onLeave: function(retval) {
         console.log("[ * ] Changing return value...");
         console.log("[ * ] The original return value is: " + retval);
-        retval.replace(1);
+        retval.replace(INSERT_RETURN_VALUE_HERE);
         console.log("[ + ] The changed return value is: " + retval);
     }
 });
@@ -32,7 +32,7 @@ Interceptor.attach(Module.getExportByName('libnative_hook.so', 'Java_infosecadve
 
 try:
     print("[ * ] Looking for app: " + package_name)
-    device = frida.get_usb_device()
+    device = frida.get_usb_device(10)
     print("[ * ] Launching app...")
     pid = device.spawn([package_name])
     device.resume(pid)
