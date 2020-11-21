@@ -3,17 +3,17 @@
 import frida
 import sys
 
-package_name = "infosecadventures.fridademo"
+package_name = "INSERT_PACKAGE_HERE"
 
 # for non-static classes
 script = """
 Java.perform(function() {
     console.log("[ * ] Starting PIN Brute-force, please wait...");
-    Java.choose("infosecadventures.fridademo.utils.PinUtil", {
+    Java.choose("INSERT_CLASS_HERE", {
         onMatch: function(instance) {
             console.log("[ * ] Instance found in memory: " + instance);
             for (var i = 1000; i < 9999; i++) {
-                if (instance.checkPin(i + "") == true) {
+                if (instance.INSERT_METHOD_HERE(i + "") == true) {
                     console.log("[ + ] Found correct PIN: " + i);
                 }
             }
@@ -28,10 +28,10 @@ Java.perform(function() {
 script = """
 Java.perform(function() {
     console.log("[ * ] Starting PIN Brute-force, please wait...")
-    var PinUtil = Java.use("infosecadventures.fridademo.utils.PinUtil");
+    var PinUtil = Java.use("INSERT_CLASS_HERE");
 
     for (var i = 1000; i < 9999; i++) {
-        if (PinUtil.checkPin(i + "") == true) {
+        if (PinUtil.INSERT_METHOD_HERE(i + "") == true) {
             console.log("[ + ] Found correct PIN: " + i);
         }
     }
@@ -40,7 +40,7 @@ Java.perform(function() {
 
 try:
     print("[ * ] Looking for app: " + package_name)
-    device = frida.get_usb_device()
+    device = frida.get_usb_device(10)
     print("[ * ] Launching app...")
     pid = device.spawn([package_name])
     device.resume(pid)
