@@ -3,23 +3,23 @@
 import frida
 import sys
 
-package_name = "infosecadventures.fridademo"
+package_name = "INSERT_PACKAGE_HERE"
 
 script = """
 Java.perform(function() {
     console.log("[ * ] Starting implementation override...")
-    var EncryptionUtil = Java.use("infosecadventures.fridademo.utils.EncryptionUtil");
-    EncryptionUtil.encrypt.implementation = function(key, value) {
-        console.log("[ + ] Key: " + key);
-        console.log("[ + ] Value: " + value);
-        return this.encrypt(key, value);
+    var EncryptionUtil = Java.use("INSERT_CLASS_HERE");
+    EncryptionUtil.INSERT_METHOD_HERE.implementation = function(INSERT_PARAMETER_1_HERE, INSERT_PARAMETER_2_HERE) {
+        console.log("[ + ] Key: " + INSERT_PARAMETER_1_HERE);
+        console.log("[ + ] Value: " + INSERT_PARAMETER_2_HERE);
+        return this.INSERT_METHOD_HERE(key, value);
     }
 });
 """
 
 try:
     print("[ * ] Looking for app: " + package_name)
-    device = frida.get_usb_device()
+    device = frida.get_usb_device(10)
     print("[ * ] Launching app...")
     pid = device.spawn([package_name])
     device.resume(pid)
