@@ -3,22 +3,22 @@
 import frida
 import sys
 
-package_name = "infosecadventures.fridademo"
+package_name = "INSERT_PACKAGE_HERE"
 
 script = """
 Java.perform(function() {
     console.log("[ * ] Starting implementation override...")
-    var PinUtil = Java.use("infosecadventures.fridademo.utils.PinUtil");
-    PinUtil.checkPin.implementation = function(pin) {
+    var PinUtil = Java.use("INSERT_CLASS_HERE");
+    PinUtil.INSERT_METHOD_HERE.implementation = function(INSERT_PARAMETER_HERE) {
         console.log("[ + ] PIN check successfully bypassed!")
-        return true;
+        return INSERT_RETURN_VALUE_HERE;
     }
 });
 """
 
 try:
     print("[ * ] Looking for app: " + package_name)
-    device = frida.get_usb_device()
+    device = frida.get_usb_device(10)
     print("[ * ] Launching app...")
     pid = device.spawn([package_name])
     device.resume(pid)
