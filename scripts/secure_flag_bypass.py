@@ -3,7 +3,7 @@
 import frida
 import sys
 
-package_name = "infosecadventures.fridademo"
+package_name = "INSERT_PACKAGE_HERE"
 
 script = """
  Java.perform(function() {
@@ -11,7 +11,7 @@ script = """
 
     var Runnable = Java.use("java.lang.Runnable");
     var DisableSecureRunnable = Java.registerClass({
-       name: "infosecadventures.fridademo.DisableSecureRunnable",
+       name: "INSERT_PACKAGE_HERE.DisableSecureRunnable",
        implements: [Runnable],
        fields: {
           activity: "android.app.Activity",
@@ -33,7 +33,7 @@ script = """
        }
     });
 
-   Java.choose("infosecadventures.fridademo.MainActivity", {
+   Java.choose("INSERT_MAINACTIVITY_HERE", {
       "onMatch": function (instance) {
          var runnable = DisableSecureRunnable.$new(instance);
          instance.runOnUiThread(runnable);
@@ -45,7 +45,7 @@ script = """
 
 try:
     print("[ * ] Looking for app: " + package_name)
-    device = frida.get_usb_device()
+    device = frida.get_usb_device(10)
     print("[ * ] Launching app...")
     pid = device.spawn([package_name])
     device.resume(pid)
