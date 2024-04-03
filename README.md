@@ -1,7 +1,6 @@
 # frida
 
 [![made-with-python](http://forthebadge.com/images/badges/made-with-python.svg)](https://www.python.org/)
-[![built-with-love](http://forthebadge.com/images/badges/built-with-love.svg)](https://gitHub.com/t0thkr1s/)
 
 
 This repository contains various Frida scripts for Android application penetration testing. I created this project to demonstrate the capabilities of the Frida dynamic-analysis framework. You can read my ["Introduction to Frida"](https://medium.com/infosec-adventures/introduction-to-frida-5a3f51595ca1) blog post on Medium, where I'm explaining how to use Frida with Android.
